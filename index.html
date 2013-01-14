@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Sticky View Bookmarklet For Responsive Web Design</title>
+	<link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+<h1>Sticky View Bookmarklet</h1>
+
+<p>Sticks the scroll position to an element as you resize the browser window.
+Nice for observing how elements behave in responsive designs.</p>
+
+<hr>
+
+<!--<p>Press <kbd>S</kbd> on your keyboard or click the button below-->
+<!--to set which element you want the scroll position to stick to.</p>-->
+
+<p><button id="js-setSticky">Set sticky element</button></p>
+
+<!--<p>Press <kbd>U</kbd> or click the button to unset the sticky element.</p>-->
+
+<p><button id="js-unsetSticky">Unset sticky element</button></p>
+
+<hr>
+
+<h2 style="background: #0f0">Test content</h2>
+
+<p style="color: #00f">Yo, here's a bunch of stuff to test with.</p>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec lorem erat. Maecenas congue faucibus lectus, eu posuere erat suscipit a. Nulla viverra felis a erat bibendum vel tincidunt felis accumsan. In vitae ligula dui, sed tincidunt erat. Aliquam eu sodales est. Proin sed urna est, in porttitor neque. Fusce fermentum blandit luctus.</p>
+<p>Sed dapibus, felis eu laoreet pharetra, velit mi dignissim purus, eget interdum elit erat vitae nunc. Donec velit ipsum, dapibus quis tristique tincidunt, aliquam eget nunc. In blandit diam sit amet arcu pharetra a imperdiet augue molestie. Aliquam id tellus eget risus sollicitudin lobortis vel vel leo. Aenean scelerisque sapien vel odio pharetra varius. Integer consequat luctus volutpat. Phasellus ac bibendum mi. Fusce ut dolor a velit ullamcorper hendrerit. Ut ut metus nec leo tincidunt rhoncus sed molestie metus. Fusce lacinia libero id arcu dignissim eget sodales nunc interdum.</p>
+<p>Praesent eu vulputate urna. Praesent pellentesque diam a dui convallis cursus. Praesent id ligula arcu. Etiam molestie massa in massa interdum vehicula. Quisque hendrerit, dui a vehicula blandit, erat sem fermentum lorem, vel rutrum est ante nec ipsum. Vestibulum lorem leo, imperdiet auctor tincidunt in, suscipit vitae mauris. Praesent tristique dictum ipsum, non fermentum nulla porta at. Donec ut lectus orci, non auctor tortor. Curabitur malesuada est sit amet ante venenatis dignissim.</p>
+
+<h3>In hac habitasse platea dictumst</h3>
+
+<p>In hac habitasse platea dictumst. Maecenas at sodales neque. Aenean sapien urna, semper ac feugiat ut, gravida ut lacus. Aliquam adipiscing tellus mollis nulla volutpat nec lobortis orci iaculis. Mauris eget ante at dui tempus ultrices. Pellentesque at nisl purus. Proin et luctus felis. Nunc ornare mattis purus eget tincidunt. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam vel neque felis. Suspendisse quis leo sit amet tellus dapibus blandit at eu lacus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+<blockquote>Maecenas vulputate sollicitudin nisl, a dapibus tellus dapibus ac. Quisque massa eros, fringilla a pellentesque nec, sagittis id ante. Nullam eget luctus justo. Proin gravida volutpat ultrices. Proin bibendum aliquam orci at volutpat.</blockquote>
+<p>Aenean facilisis scelerisque justo, eget volutpat libero imperdiet quis. Nunc commodo, diam eu elementum dapibus, magna augue aliquet libero, sed egestas erat diam eget tellus. Maecenas vulputate sollicitudin nisl, a dapibus tellus dapibus ac. Quisque massa eros, fringilla a pellentesque nec, sagittis id ante. Nullam eget luctus justo. Proin gravida volutpat ultrices. Proin bibendum aliquam orci at volutpat. Maecenas semper facilisis enim id volutpat. Integer ac lacus libero, sed fermentum dui. Duis pellentesque, eros gravida porttitor rutrum, justo dui elementum mauris, a dignissim arcu lorem in nisi. Cras a metus vel lacus rhoncus sollicitudin. Donec sit amet libero eget nisi euismod convallis sit amet eu lacus. In hac habitasse platea dictumst. Duis ante nibh, tincidunt a placerat a, pulvinar id neque. Phasellus varius adipiscing odio a tempus.</p>
+
+<h3>Aenean eu justo</h3>
+
+<p>Aenean eu justo et libero ullamcorper dapibus vel a nisi. Suspendisse iaculis felis eget massa auctor euismod. Aenean vehicula sem vitae sem placerat eu egestas mauris congue. Etiam vitae dui leo, in aliquet felis. Donec varius purus quis risus elementum dignissim. Nulla nec magna augue. Pellentesque eu tempor risus. Nullam ante nulla, consequat vel dapibus ut, hendrerit quis nunc. Fusce ornare dolor at nisl ultrices sodales. Praesent mattis varius magna a consectetur.</p>
+<p>Proin interdum, sem laoreet pretium molestie, diam sapien adipiscing ante, vel posuere arcu eros non magna. Cras id nunc ipsum. Aliquam volutpat, enim vel facilisis interdum, felis lacus euismod eros, vel molestie dui nunc eget est. Quisque euismod congue rhoncus. Maecenas facilisis porttitor eros in vulputate. Aenean sapien tortor, tincidunt ut interdum at, consectetur vel magna. Donec leo arcu, bibendum consectetur consectetur et, consequat nec orci. Nulla et justo felis, eget bibendum metus. Proin erat metus, laoreet id interdum eget, congue convallis justo. Phasellus imperdiet cursus odio, ut tincidunt nulla bibendum et. Aenean at metus nunc, ut tristique diam. Nullam condimentum ullamcorper nunc sollicitudin vestibulum.</p>
+<p>Vivamus nunc tellus, pharetra a volutpat ac, elementum quis mi. Etiam porta mauris eu felis consequat facilisis. Sed iaculis urna in urna blandit viverra. Mauris at nulla eros, sed pulvinar lorem. Suspendisse potenti. Aliquam erat volutpat. Maecenas quis nunc ut magna lobortis lobortis. Quisque id sapien id elit gravida congue nec a metus. Sed scelerisque, ante in tincidunt laoreet, tellus mi vulputate justo, nec egestas mi erat ac enim.</p>
+
+<ul>
+	<li>Proin nisl nunc</li>
+	<li>Vehicula sed malesuada ut</li>
+	<li>Dictum blandit arcu</li>
+</ul>
+
+<p>Proin nisl nunc, vehicula sed malesuada ut, dictum blandit arcu. Sed aliquet vehicula est, sed euismod justo pretium id. Morbi feugiat, justo sed gravida fringilla, lectus mauris rhoncus lectus, quis pretium magna magna sed dolor. Fusce justo dui, suscipit id pretium in, porta quis magna. Phasellus faucibus mi a nulla adipiscing vel porttitor odio consectetur. Sed lacinia nunc et velit tempus at scelerisque eros dapibus. Cras nisl mi, mollis id rhoncus vel, condimentum vitae ante. Maecenas mattis, felis vel auctor iaculis, magna ante auctor tellus, eget scelerisque nisl ante ut nisi. Donec vitae vulputate nulla.</p>
+<p>Curabitur eu augue nisl. Integer viverra sapien eget nibh tristique pulvinar. Suspendisse sagittis, velit vel porta eleifend, nunc neque condimentum urna, id ultrices nunc odio adipiscing erat. Praesent ut lectus id metus convallis mollis. Sed ornare mi sit amet nunc rhoncus ultricies. Duis at nulla id nisl hendrerit mattis vel non nisi. Cras diam sapien, sagittis quis feugiat vel, fringilla et nunc. Donec vitae massa odio. Proin feugiat, urna rhoncus bibendum fringilla, eros mauris elementum est, eu tempor nunc erat ut odio.</p>
+
+<script src="sticky-view.js"></script>
+<script>
+	document.getElementById('js-setSticky').addEventListener('click', window.StickyView.pickElement)
+	document.getElementById('js-unsetSticky').addEventListener('click', window.StickyView.cancelSticky)
+</script>
+
+</body>
+</html>
