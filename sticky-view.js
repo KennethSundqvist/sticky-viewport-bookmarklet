@@ -40,10 +40,12 @@
 	*/
 	
 	function pickSticky(e) {
-		e.stopPropagation()
 		startEventHandlers()
-		setElementPosition(pickerEl, e.target)
 		showHighlightEl(pickerEl)
+		if (e) {
+			e.stopPropagation()
+			setElementPosition(pickerEl, e.target)
+		}
 	}
 	
 	function cancelPickSticky(e) {
@@ -96,8 +98,7 @@
 	function stickToEl() {
 		// FIXME make position relative to o.root and
 		// not closest relative parent element
-		var pos = stickyEl.offsetTop
-		o.root.scrollTop = pos
+		o.root.scrollTop = getElementPosition(stickyEl).t;
 		if (o.showMarker) setElementPosition(markerEls[activeMarker % 2], stickyEl)
 	}
 	
@@ -133,12 +134,20 @@
 	}
 	
 	function getElementPosition(el) {
-		return {
-			t: el.offsetTop,
-			l: el.offsetLeft,
+		var pos = {
+			t: 0,
+			l: 0,
 			w: el.offsetWidth,
 			h: el.offsetHeight
 		}
+		
+		while (el && !isNaN(el.offsetTop)) {
+			pos.t += el.offsetTop
+			pos.l += el.offsetLeft
+			el = el.offsetParent
+		}
+		
+		return pos;
 	}
 	
 	function setElementPosition(positionedEl, destinationEl) {
