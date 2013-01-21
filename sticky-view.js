@@ -1,4 +1,4 @@
-window.StickyView = window.StickyView || (function(w, d, o) {
+;window.StickyView = window.StickyView || (function(o) {
 	// options:
 	// 	root: The element with a scrollbar that we want to control (default: window.document.body)
 	// 	markerStyles: CSS styles for the marker element
@@ -6,7 +6,9 @@ window.StickyView = window.StickyView || (function(w, d, o) {
 	// 	showMarker: Show the marker element when a sticky element is selected
 	// 	animationTime: Duration of animations for the marker and picker elements, Float, in seconds (default: .15s)
 	
-	var stickyEl, // Element that viewport sticks to
+	var w = window,
+		d = window.document,
+		stickyEl, // Element that viewport sticks to
 		pickerTargetEl, // Element that is under the cursor when the picker is active
 		markerEls = [d.createElement('div'), d.createElement('div')], // Visual elements for the marker highlight
 		pickerEl = d.createElement('div'), // Visual element for the picker highlight
@@ -33,12 +35,61 @@ window.StickyView = window.StickyView || (function(w, d, o) {
 	d.body.appendChild(markerEls[1])
 	d.body.appendChild(pickerEl)
 	
-	function getPosition(el) {
-		return {
-			t: el.offsetTop,
-			l: el.offsetLeft,
-			w: el.offsetWidth,
-			h: el.offsetHeight
+	/*
+		Picking
+	*/
+	
+	function pickSticky(e) {
+		e.stopPropagation()
+		startEventHandlers()
+		setElementPosition(pickerEl, e.target)
+		showHighlightEl(pickerEl)
+	}
+	
+	function cancelPickSticky(e) {
+		if (typeof e === 'undefined' || e && e.keyCode === 27) {
+			stopEventHandlers()
+			hideHighlightEl(pickerEl)
+		}
+	}
+	
+	function startEventHandlers() {
+		o.root.addEventListener('mousemove', setHighlightFromPointer, false)
+		o.root.addEventListener('click', setStickyFromPointer, false)
+		w.addEventListener('keyup', cancelPickSticky, false)
+	}
+	
+	function stopEventHandlers() {
+		o.root.removeEventListener('mousemove', setHighlightFromPointer, false)
+		o.root.removeEventListener('click', setStickyFromPointer, false)
+		w.removeEventListener('keyup', cancelPickSticky, false)
+	}
+	
+	/*
+		Sticky
+	*/
+	
+	function setSticky(el) {
+		stickyEl = el
+		w.addEventListener('resize', stickToEl, false)
+		if (o.showMarker) updateMarkerEl()
+	}
+	
+	function cancelSticky() {
+		w.removeEventListener('resize', stickToEl)
+		hideHighlightEl(markerEls[activeMarker % 2])
+	}
+	
+	function setStickyFromPointer(e) {
+		if (e.target !== o.root) {
+			setSticky(e.target)
+			stopEventHandlers()
+			var pos = getElementPosition(pickerTargetEl)
+			pickerEl.style.top = pos.t - 20 + 'px'
+			pickerEl.style.left = pos.l - 20 + 'px'
+			pickerEl.style.width = pos.w + 40 + 'px'
+			pickerEl.style.height = pos.h + 40 + 'px'
+			hideHighlightEl(pickerEl)
 		}
 	}
 	
@@ -50,46 +101,9 @@ window.StickyView = window.StickyView || (function(w, d, o) {
 		if (o.showMarker) setElementPosition(markerEls[activeMarker % 2], stickyEl)
 	}
 	
-	function cancelSticky() {
-		w.removeEventListener('resize', stickToEl)
-		hideHighlightEl(markerEls[activeMarker % 2])
-	}
-	
-	function setElFromPointer(e) {
-		if (e.target !== o.root) {
-			setEl(e.target)
-			stopEventHandlers()
-			successHighlight()
-		}
-	}
-	
-	function setEl(el) {
-		stickyEl = el
-		w.addEventListener('resize', stickToEl, false)
-		if (o.showMarker) updateMarkerEl()
-	}
-	
-	function setHighlightFromPointer(e) {
-		if (e.target !== pickerTargetEl && e.target !== o.root) {
-			pickerTargetEl = e.target
-			setElementPosition(pickerEl, pickerTargetEl)
-		}
-	}
-	
-	function setElementPosition(positionedEl, destinationEl) {
-		var pos = getPosition(destinationEl)
-		positionedEl.style.top = pos.t + 'px'
-		positionedEl.style.left = pos.l + 'px'
-		positionedEl.style.width = pos.w + 'px'
-		positionedEl.style.height = pos.h + 'px'
-	}
-	
-	function updateMarkerEl() {
-		hideHighlightEl(markerEls[activeMarker % 2])
-		activeMarker++
-		setElementPosition(markerEls[activeMarker % 2], stickyEl)
-		showHighlightEl(markerEls[activeMarker % 2])
-	}
+	/*
+		Highlights
+	*/
 	
 	function showHighlightEl(el) {
 		clearTimeout(hidingElTimers[el])
@@ -104,51 +118,48 @@ window.StickyView = window.StickyView || (function(w, d, o) {
 		}, o.animationTime * 1000)
 	}
 	
-	function successHighlight() {
-		var pos = getPosition(pickerTargetEl)
-		pickerEl.style.opacity = 0
-		pickerEl.style.top = pos.t - 20 + 'px'
-		pickerEl.style.left = pos.l - 20 + 'px'
-		pickerEl.style.width = pos.w + 40 + 'px'
-		pickerEl.style.height = pos.h + 40 + 'px'
-		setTimeout(function() {
-			pickerEl.style.display = 'none'
-		}, o.animationTime * 1000)
-	}
-	
-	function pickElement(e) {
-		e.stopPropagation()
-		startEventHandlers()
-		setElementPosition(pickerEl, e.target)
-		showHighlightEl(pickerEl)
-	}
-	
-	function cancelPickElement(e) {
-		if (typeof e === 'undefined' || e && e.keyCode === 27) {
-			stopEventHandlers()
-			hideHighlightEl(pickerEl)
+	function setHighlightFromPointer(e) {
+		if (e.target !== pickerTargetEl && e.target !== o.root) {
+			pickerTargetEl = e.target
+			setElementPosition(pickerEl, pickerTargetEl)
 		}
 	}
 	
-	function startEventHandlers() {
-		o.root.addEventListener('mousemove', setHighlightFromPointer, false)
-		o.root.addEventListener('click', setElFromPointer, false)
-		w.addEventListener('keyup', cancelPickElement, false)
+	function updateMarkerEl() {
+		hideHighlightEl(markerEls[activeMarker % 2])
+		activeMarker++
+		setElementPosition(markerEls[activeMarker % 2], stickyEl)
+		showHighlightEl(markerEls[activeMarker % 2])
 	}
 	
-	function stopEventHandlers() {
-		o.root.removeEventListener('mousemove', setHighlightFromPointer, false)
-		o.root.removeEventListener('click', setElFromPointer, false)
-		w.removeEventListener('keyup', cancelPickElement, false)
+	function getElementPosition(el) {
+		return {
+			t: el.offsetTop,
+			l: el.offsetLeft,
+			w: el.offsetWidth,
+			h: el.offsetHeight
+		}
 	}
+	
+	function setElementPosition(positionedEl, destinationEl) {
+		var pos = getElementPosition(destinationEl)
+		positionedEl.style.top = pos.t + 'px'
+		positionedEl.style.left = pos.l + 'px'
+		positionedEl.style.width = pos.w + 'px'
+		positionedEl.style.height = pos.h + 'px'
+	}
+	
+	/*
+		Public
+	*/
 	
 	return {
-		pickElement: pickElement,
-		cancelPickElement: cancelPickElement,
-		setElement: setEl,
+		pickSticky: pickSticky,
+		cancelPickSticky: cancelPickSticky,
+		setSticky: setSticky,
 		cancelSticky: cancelSticky
 	}
-}(window, window.document, {
+}({
 	root: window.document.body,
 	markerStyles: 'background: rgba(255, 230, 0, .2); box-shadow: 0 0 10px rgba(255, 230, 0, .2);',
 	pickerStyles: 'background: rgba(0, 80, 255, .4); box-shadow: 0 0 10px rgba(0, 80, 255, .4);',
