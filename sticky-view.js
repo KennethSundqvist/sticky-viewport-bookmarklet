@@ -23,7 +23,7 @@
 			'opacity: 0;' +
 			'border-radius: 3px;' +
 			'-webkit-transition: opacity ' + o.animationTime + 's;',
-		guiBtnStyles = 'float: left; padding: 6px 8px; cursor: pointer;', // GUI buttons shared styles
+		guiBtnStyles = 'float: left; padding: 6px 8px; cursor: pointer; font: 20px/1 icons;', // GUI buttons shared styles
 		activeMarker = 0, // Increased each time the markers are updated. markerEls[activeMarker % markerEls.length] gets the current marker
 		hidingElTimers = [] // setTimeouts for hiding elements
 	
@@ -45,13 +45,15 @@
 		'-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .4);' +
 		'font: 12px/1 Verdana, Arial, sans-serif;')
 	
-	guiBtnPickEl.innerHTML = 'Pick'
+	guiBtnPickEl.innerHTML = '\u261D' // Icon font: Up hand
 	guiBtnPickEl.setAttribute('style', guiBtnStyles)
+	guiBtnPickEl.setAttribute('title', 'Pick an element and stick the viewport to it')
 	guiBtnPickEl.addEventListener('click', pickSticky, false)
 	guiEl.appendChild(guiBtnPickEl)
 	
-	guiBtnUnsetEl.innerHTML = '&times;'
-	guiBtnUnsetEl.setAttribute('style', guiBtnStyles + 'display: none; border-left: 1px solid #aaa; font-weight: bold;')
+	guiBtnUnsetEl.innerHTML = '\u2715' // Icon font: Cancel
+	guiBtnUnsetEl.setAttribute('style', guiBtnStyles + 'display: none; border-left: 2px solid rgba(255, 255, 255, .7);')
+	guiBtnUnsetEl.setAttribute('title', 'Release the viewport from stickyness')
 	guiBtnUnsetEl.addEventListener('click', cancelSticky, false)
 	guiEl.appendChild(guiBtnUnsetEl)
 	
@@ -123,8 +125,6 @@
 	}
 	
 	function stickToEl() {
-		// FIXME make position relative to o.root and
-		// not closest relative parent element
 		o.root.scrollTop = getElementPosition(stickyEl).t
 		if (o.showMarker) setElementPosition(markerEls[activeMarker % 2], stickyEl)
 	}
