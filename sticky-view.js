@@ -8,7 +8,8 @@
 	
 	o.animationTime = o.animationTime || .15
 	
-	var w = window,
+	var version = 'pre-alpha',
+		w = window,
 		d = window.document,
 		stickyEl, // Element that viewport sticks to
 		pickerTargetEl, // Element that is under the cursor when the picker is active
@@ -193,7 +194,8 @@
 		pickSticky: pickSticky,
 		cancelPickSticky: cancelPickSticky,
 		setSticky: setSticky,
-		cancelSticky: cancelSticky
+		cancelSticky: cancelSticky,
+		getVersion: function() { return version }
 	}
 }({
 	root: window.document.body,
