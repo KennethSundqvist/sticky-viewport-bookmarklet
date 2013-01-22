@@ -6,22 +6,28 @@
 	// 	showMarker: Show the marker element when a sticky element is selected
 	// 	animationTime: Duration of animations for the marker and picker elements, Float, in seconds (default: .15s)
 	
+	o.animationTime = o.animationTime || .15
+	
 	var w = window,
 		d = window.document,
 		stickyEl, // Element that viewport sticks to
 		pickerTargetEl, // Element that is under the cursor when the picker is active
 		markerEls = [d.createElement('div'), d.createElement('div')], // Visual elements for the marker highlight
 		pickerEl = d.createElement('div'), // Visual element for the picker highlight
+		guiEl = d.createElement('div'), // GUI container element
+		guiBtnPickEl = d.createElement('div'), // GUI button to initiate picker
+		guiBtnUnsetEl = d.createElement('div'), // GUI button to cancel sticky
 		hlSharedStyles = 'display: none;' + // Highlight elements shared styles
 			'pointer-events: none;' +
 			'position: absolute;' +
+			'opacity: 0;' +
 			'border-radius: 3px;' +
 			'-webkit-transition: opacity ' + o.animationTime + 's;',
+		guiBtnStyles = 'float: left; padding: 6px 8px; cursor: pointer;', // GUI buttons shared styles
 		activeMarker = 0, // Increased each time the markers are updated. markerEls[activeMarker % markerEls.length] gets the current marker
 		hidingElTimers = [] // setTimeouts for hiding elements
 	
 	o.rootEl = o.rootEl || d.body
-	o.animationTime = o.animationTime || .15
 	
 	markerEls[0].setAttribute('style', hlSharedStyles + o.markerStyles)
 	markerEls[1].setAttribute('style', hlSharedStyles + o.markerStyles)
@@ -31,21 +37,40 @@
 		'-webkit-transition: all ' + o.animationTime + 's;' +
 		o.pickerStyles)
 	
+	guiEl.setAttribute('style',
+		'position: fixed;' +
+		'top: 10px; left: 10px;' +
+		'color: #fff; background: rgba(0, 0, 0, .7);' +
+		'border-radius: 5px;' +
+		'-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .4);' +
+		'font: 12px/1 Verdana, Arial, sans-serif;')
+	
+	guiBtnPickEl.innerHTML = 'Pick'
+	guiBtnPickEl.setAttribute('style', guiBtnStyles)
+	guiBtnPickEl.addEventListener('click', pickSticky, false)
+	guiEl.appendChild(guiBtnPickEl)
+	
+	guiBtnUnsetEl.innerHTML = '&times;'
+	guiBtnUnsetEl.setAttribute('style', guiBtnStyles + 'display: none; border-left: 1px solid #aaa; font-weight: bold;')
+	guiBtnUnsetEl.addEventListener('click', cancelSticky, false)
+	guiEl.appendChild(guiBtnUnsetEl)
+	
 	d.body.appendChild(markerEls[0])
 	d.body.appendChild(markerEls[1])
 	d.body.appendChild(pickerEl)
+	d.body.appendChild(guiEl)
 	
 	/*
 		Picking
 	*/
 	
 	function pickSticky(e) {
-		startEventHandlers()
-		showHighlightEl(pickerEl)
 		if (e) {
 			e.stopPropagation()
 			setElementPosition(pickerEl, e.target)
 		}
+		startEventHandlers()
+		showHighlightEl(pickerEl)
 	}
 	
 	function cancelPickSticky(e) {
@@ -74,12 +99,14 @@
 	function setSticky(el) {
 		stickyEl = el
 		w.addEventListener('resize', stickToEl, false)
+		guiBtnUnsetEl.style.display = 'block'
 		if (o.showMarker) updateMarkerEl()
 	}
 	
 	function cancelSticky() {
 		w.removeEventListener('resize', stickToEl)
 		hideHighlightEl(markerEls[activeMarker % 2])
+		guiBtnUnsetEl.style.display = 'none'
 	}
 	
 	function setStickyFromPointer(e) {
@@ -98,7 +125,7 @@
 	function stickToEl() {
 		// FIXME make position relative to o.root and
 		// not closest relative parent element
-		o.root.scrollTop = getElementPosition(stickyEl).t;
+		o.root.scrollTop = getElementPosition(stickyEl).t
 		if (o.showMarker) setElementPosition(markerEls[activeMarker % 2], stickyEl)
 	}
 	
@@ -147,7 +174,7 @@
 			el = el.offsetParent
 		}
 		
-		return pos;
+		return pos
 	}
 	
 	function setElementPosition(positionedEl, destinationEl) {
