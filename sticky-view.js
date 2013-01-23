@@ -107,7 +107,7 @@
 	}
 	
 	function cancelSticky() {
-		w.removeEventListener('resize', stickToEl)
+		w.removeEventListener('resize', stickToEl, false)
 		hideHighlightEl(markerEls[activeMarker % 2])
 		guiBtnUnsetEl.style.display = 'none'
 	}
