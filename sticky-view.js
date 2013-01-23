@@ -115,6 +115,8 @@
 	}
 	
 	function setStickyFromPointer(e) {
+		e.preventDefault()
+		e.stopPropagation()
 		if (e.target !== o.root) {
 			setSticky(e.target)
 			stopEventHandlers()
