@@ -21,6 +21,7 @@
 		hlSharedStyles = 'display: none;' + // Highlight elements shared styles
 			'pointer-events: none;' +
 			'position: absolute;' +
+			'z-index: 999999;' +
 			'opacity: 0;' +
 			'border-radius: 3px;' +
 			'-webkit-transition: opacity ' + o.animationTime + 's;',
@@ -41,6 +42,7 @@
 	guiEl.setAttribute('style',
 		'position: fixed;' +
 		'top: 10px; left: 10px;' +
+		'z-index: 999998;' +
 		'color: #fff; background: rgba(0, 0, 0, .7);' +
 		'border-radius: 5px;' +
 		'-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .4);' +
