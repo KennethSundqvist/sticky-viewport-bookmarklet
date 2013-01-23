@@ -130,7 +130,8 @@
 	}
 	
 	function stickToEl() {
-		o.root.scrollTop = getElementPosition(stickyEl).t
+		var stickyElPos = getElementPosition(stickyEl),
+		o.root.scrollTop = Math.round(stickyElPos.t - ((w.innerHeight - stickyElPos.h) / 2))
 		if (o.showMarker) setElementPosition(markerEls[activeMarker % 2], stickyEl)
 	}
 	
