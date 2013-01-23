@@ -14,14 +14,9 @@ Nice for observing how elements behave in responsive designs.</p>
 
 <hr>
 
-<!--<p>Press <kbd>S</kbd> on your keyboard or click the button below-->
-<!--to set which element you want the scroll position to stick to.</p>-->
+<h2>Bookmarklet</h2>
 
-<p><button id="js-setSticky">Set sticky element</button></p>
-
-<!--<p>Press <kbd>U</kbd> or click the button to unset the sticky element.</p>-->
-
-<p><button id="js-unsetSticky">Unset sticky element</button></p>
+<p>Drag this link to your bookmarks toolbar: <a href="javascript:(function(d){var s=d.createElement('script');s.src='http://192.168.1.100:1500/sticky-view/sticky-view.js';d.body.appendChild(s)}(document))">Sticky View</a></p>
 
 <hr>
 
@@ -64,10 +59,6 @@ Nice for observing how elements behave in responsive designs.</p>
 <p>Curabitur eu augue nisl. Integer viverra sapien eget nibh tristique pulvinar. Suspendisse sagittis, velit vel porta eleifend, nunc neque condimentum urna, id ultrices nunc odio adipiscing erat. Praesent ut lectus id metus convallis mollis. Sed ornare mi sit amet nunc rhoncus ultricies. Duis at nulla id nisl hendrerit mattis vel non nisi. Cras diam sapien, sagittis quis feugiat vel, fringilla et nunc. Donec vitae massa odio. Proin feugiat, urna rhoncus bibendum fringilla, eros mauris elementum est, eu tempor nunc erat ut odio.</p>
 
 <script src="sticky-view.js"></script>
-<script>
-	document.getElementById('js-setSticky').addEventListener('click', window.StickyView.pickSticky)
-	document.getElementById('js-unsetSticky').addEventListener('click', window.StickyView.cancelSticky)
-</script>
 
 </body>
 </html>
