@@ -21,10 +21,10 @@
 		guiBtnPickEl, // GUI button to initiate picker
 		guiBtnUnsetEl, // GUI button to cancel sticky
 		guiBtnOptsEl, // GUI button to toggle options GUI
+		guiOptShowMarkerCheckbox,
 		styleEl = d.createElement('style'), // For the CSS
 		css,
-		activeMarker = 0, // Increased each time the markers are updated. markerEls[activeMarker % markerEls.length] gets the current marker
-		hidingElTimers = [] // setTimeouts for hiding elements
+		activeMarker = 0 // Increased each time the markers are updated. markerEls[activeMarker % markerEls.length] gets the current marker
 	
 	o.rootEl = o.rootEl || d.body
 	
@@ -48,7 +48,7 @@
 		'.sv_-btns {float:left; text-align:center;}' +
 		'.sv_-btns div {padding:6px 8px; cursor:pointer; font:20px/1 icons;}' +
 		'.sv_-btnUnset {color:hsl(60, 100%, 78%);}' +
-		'.sv_-marker {' + prefixCss('webkit,o','transition:opacity .8s;') + 'background: hsla(60, 100%, 50%, .2); box-shadow: 0 0 10px hsla(60, 100%, 50%, .2);}' +
+		'.sv_-marker {' + prefixCss('webkit,o','transition:opacity .6s;') + 'background: hsla(60, 100%, 50%, .2); box-shadow: 0 0 10px hsla(60, 100%, 50%, .2);}' +
 		'.sv_-picker {' + prefixCss('webkit,o','transition:all .3s;') + 'background: hsla(199, 100%, 55%, .4); box-shadow: 0 0 10px hsla(199, 100%, 55%, .4);}' +
 		'.sv_-active {color:hsl(199, 100%, 63%);}' +
 		'.sv_-hide {display:none}'
@@ -73,7 +73,7 @@
 			'<div class="sv_-btnUnset sv_-hide" title="Release the viewport from stickyness">\u2715</div>' +
 		'</div>' +
 		'<div class="sv_-opts sv_-hide">' +
-			'<label><input type="checkbox"' + (o.showMarker ? ' checked' : '') + '> Show sticky marker</label>' +
+			'<label><input id="sv_-optShowMarkerCheckbox" type="checkbox"' + (o.showMarker ? ' checked' : '') + '> Show sticky marker</label>' +
 		'</div>'
 	
 	guiOptsEl = guiEl.querySelector('.sv_-opts')
@@ -90,6 +90,19 @@
 		guiOptsEl.style.display = isHidden ? 'block' : 'none'
 		guiBtnOptsEl.className = isHidden ? guiBtnOptsEl.className + ' sv_-active' : guiBtnOptsEl.className.replace(' sv_-active','')
 	}, false)
+	
+	guiOptShowMarkerCheckbox = guiEl.querySelector('#sv_-optShowMarkerCheckbox')
+	guiOptShowMarkerCheckbox.addEventListener('change', function() {
+		o.showMarker = this.checked
+		if (stickyEl) {
+			if (this.checked) {
+				setElementPosition(markerEls[activeMarker % 2], stickyEl)
+				showHighlightEl(markerEls[activeMarker % 2])
+			} else {
+				hideHighlightEl(markerEls[activeMarker % 2])
+			}
+		}
+	})
 	
 	markerEls.forEach(function(el) {
 		el.className = 'sv_-marker sv_-hl'
@@ -147,6 +160,7 @@
 	}
 	
 	function cancelSticky() {
+		stickyEl = null
 		w.removeEventListener('resize', stickToEl, false)
 		hideHighlightEl(markerEls[activeMarker % 2])
 		guiBtnUnsetEl.style.display = 'none'
@@ -179,7 +193,6 @@
 	*/
 	
 	function showHighlightEl(el) {
-		clearTimeout(hidingElTimers[el])
 		el.style.opacity = '1'
 	}
 	
