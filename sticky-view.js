@@ -114,9 +114,9 @@
 	d.body.appendChild(guiEl)
 	d.body.appendChild(pickerEl)
 	
-	/*
-		Picking
-	*/
+	//
+	// Picking
+	//
 	
 	function pickSticky(e) {
 		if (e) {
@@ -148,9 +148,9 @@
 		w.removeEventListener('keyup', cancelPickSticky, false)
 	}
 	
-	/*
-		Sticky
-	*/
+	//
+	// Sticky
+	//
 	
 	function setSticky(el) {
 		stickyEl = el
@@ -188,9 +188,9 @@
 		if (o.showMarker) setElementPosition(markerEls[activeMarker % 2], stickyEl)
 	}
 	
-	/*
-		Highlights
-	*/
+	//
+	// Highlights
+	//
 	
 	function showHighlightEl(el) {
 		el.style.opacity = '1'
@@ -239,9 +239,9 @@
 		positionedEl.style.height = pos.h + 'px'
 	}
 	
-	/*
-		Public
-	*/
+	//
+	// Public
+	//
 	
 	return {
 		pickSticky: pickSticky,
