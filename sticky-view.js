@@ -5,21 +5,22 @@
 	
     // "icons" web font characters
     // 
-    // u+2715  cancel
+    // u+2715  x
     // u+2699  cog
     // u+261D  up hand
 	
 	var version = 'pre-alpha',
 		w = window,
-		d = window.document,
+		d = w.document,
+		sticky = false, // If the viewport should stick when resizing
 		stickyEl, // Element that viewport sticks to
 		pickerTargetEl, // Element that is under the cursor when the picker is active
 		markerEls = [d.createElement('div'), d.createElement('div')], // Visual elements for the marker highlight
 		pickerEl = d.createElement('div'), // Visual element for the picker highlight
 		guiEl = d.createElement('div'), // GUI container element
-		guiOptsEl, // GUI button to toggle options GUI
+		guiOptsEl, // GUI wrapper containing the options
 		guiBtnPickEl, // GUI button to initiate picker
-		guiBtnUnsetEl, // GUI button to cancel sticky
+		guiBtnToggleStickyEl, // GUI button to toggle viewport stickyness
 		guiBtnOptsEl, // GUI button to toggle options GUI
 		guiOptShowMarkerCheckbox,
 		styleEl = d.createElement('style'), // For the CSS
@@ -47,11 +48,12 @@
 		'.sv_-opts label {display:block; cursor:pointer;}' +
 		'.sv_-hl {pointer-events:none; position:absolute; z-index:999999; opacity:0; border-radius:3px;}' +
 		'.sv_-btns {float:left; text-align:center;}' +
+		'.sv_-marker, .sv_-btns div {' + prefixCss('webkit,o','transition:opacity .6s, color .6s;') + '}' +
 		'.sv_-btns div {padding:6px 8px; cursor:pointer; font:20px/1 icons;}' +
-		'.sv_-btnUnset {color:hsl(60, 100%, 78%);}' +
-		'.sv_-marker {' + prefixCss('webkit,o','transition:opacity .6s;') + 'background: hsla(60, 100%, 50%, .2); box-shadow: 0 0 10px hsla(60, 100%, 50%, .2);}' +
+		'.sv_-marker {background: hsla(60, 100%, 50%, .2); box-shadow: 0 0 10px hsla(60, 100%, 50%, .2);}' +
 		'.sv_-picker {' + prefixCss('webkit,o','transition:all .3s;') + 'background: hsla(199, 100%, 55%, .4); box-shadow: 0 0 10px hsla(199, 100%, 55%, .4);}' +
 		'.sv_-active {color:hsl(199, 100%, 63%);}' +
+		'.sv_-disabled {opacity:.4;}' +
 		'.sv_-hide {display:none}'
 		
 	styleEl.type = 'text/css'
@@ -71,10 +73,10 @@
 	guiEl.innerHTML = '<div class="sv_-btns">'+ 
 			'<div class="sv_-btnOpts" title="Options for Sticky View">\u2699</div>' +
 			'<div class="sv_-btnPick" title="Pick an element and stick the viewport to it">\u261D</div>' +
-			'<div class="sv_-btnUnset sv_-hide" title="Release the viewport from stickyness">\u2715</div>' +
+			'<div class="sv_-btnSticky sv_-hide" title="Toggle viewport stickyness">\u2715</div>' +
 		'</div>' +
 		'<div class="sv_-opts sv_-hide">' +
-			'<label><input id="sv_-optShowMarkerCheckbox" type="checkbox"' + (o.showMarker ? ' checked' : '') + '> Show sticky marker</label>' +
+			'<label><input class="sv_-optShowMarkerCheckbox" type="checkbox"' + (o.showMarker ? ' checked' : '') + '> Show sticky marker</label>' +
 		'</div>'
 	
 	guiOptsEl = guiEl.querySelector('.sv_-opts')
@@ -82,8 +84,8 @@
 	guiBtnPickEl = guiEl.querySelector('.sv_-btnPick')
 	guiBtnPickEl.addEventListener('click', pickSticky, false)
 	
-	guiBtnUnsetEl = guiEl.querySelector('.sv_-btnUnset')
-	guiBtnUnsetEl.addEventListener('click', cancelSticky, false)
+	guiBtnToggleStickyEl = guiEl.querySelector('.sv_-btnSticky')
+	guiBtnToggleStickyEl.addEventListener('click', toggleSticky, false)
 	
 	guiBtnOptsEl = guiEl.querySelector('.sv_-btnOpts')
 	guiBtnOptsEl.addEventListener('click', function() {
@@ -92,7 +94,7 @@
 		guiBtnOptsEl.className = isHidden ? guiBtnOptsEl.className + ' sv_-active' : guiBtnOptsEl.className.replace(' sv_-active','')
 	}, false)
 	
-	guiOptShowMarkerCheckbox = guiEl.querySelector('#sv_-optShowMarkerCheckbox')
+	guiOptShowMarkerCheckbox = guiEl.querySelector('.sv_-optShowMarkerCheckbox')
 	guiOptShowMarkerCheckbox.addEventListener('change', function() {
 		o.showMarker = this.checked
 		if (stickyEl) {
@@ -155,16 +157,32 @@
 	
 	function setSticky(el) {
 		stickyEl = el
-		w.addEventListener('resize', stickToEl, false)
-		guiBtnUnsetEl.style.display = 'block'
-		if (o.showMarker) updateMarkerEl()
+		enableSticky()
 	}
 	
-	function cancelSticky() {
-		stickyEl = null
-		w.removeEventListener('resize', stickToEl, false)
-		hideHighlightEl(markerEls[activeMarker % 2])
-		guiBtnUnsetEl.style.display = 'none'
+	function toggleSticky() {
+		if (sticky) disableSticky()
+		else if (stickyEl) enableSticky()
+		console.log(sticky)
+	}
+	
+	function enableSticky() {
+		if (stickyEl) {
+			if (!sticky) w.addEventListener('resize', stickToEl, false)
+			sticky = true
+			guiBtnToggleStickyEl.style.display = 'block'
+			guiBtnToggleStickyEl.className = guiBtnToggleStickyEl.className.replace(' sv_-disabled','')
+			if (o.showMarker) updateMarkerEl()
+		}
+	}
+	
+	function disableSticky() {
+		if (sticky) {
+			sticky = false
+			w.removeEventListener('resize', stickToEl, false)
+			hideHighlightEl(markerEls[activeMarker % 2])
+			guiBtnToggleStickyEl.className += ' sv_-disabled'
+		}
 	}
 	
 	function setStickyFromPointer(e) {
@@ -248,7 +266,9 @@
 		pickSticky: pickSticky,
 		cancelPickSticky: cancelPickSticky,
 		setSticky: setSticky,
-		cancelSticky: cancelSticky,
+		toggleSticky: toggleSticky,
+		enableSticky: enableSticky,
+		disableSticky: disableSticky,
 		getVersion: function() { return version }
 	}
 }({
