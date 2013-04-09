@@ -163,7 +163,6 @@
 	function toggleSticky() {
 		if (sticky) disableSticky()
 		else if (stickyEl) enableSticky()
-		console.log(sticky)
 	}
 	
 	function enableSticky() {
