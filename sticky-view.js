@@ -211,11 +211,15 @@
 	//
 	
 	function showHighlightEl(el) {
+        el.style.display = 'block'
 		el.style.opacity = '1'
 	}
 	
 	function hideHighlightEl(el) {
 		el.style.opacity = '0'
+		setTimeout(function() {
+		  el.style.display = 'none'
+		}, 620) // Longest CSS animation for hiding is 600 ms
 	}
 	
 	function setHighlightFromPointer(e) {
