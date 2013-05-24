@@ -41,11 +41,11 @@
 		'.sv_-gui * {font-weight:normal; text-transform:none; text-shadow:none; font: 12px/1 Verdana,Arial,sans-serif;}' +
 		'.sv_-hl {pointer-events:none; position:absolute; z-index:999999; opacity:0; border-radius:3px;}' +
 		'.sv_-marker, .sv_-btn {' + prefixCss('webkit,o','transition:all .5s;') + '}' +
-		'.sv_-btn {width:1.8em; padding:6px 8px; cursor:pointer; font:20px/1 stickyviewbookmarkleticons; text-align:center;}' +
+		'.sv_-btn {width:32px; padding:6px 0; cursor:pointer; font:20px/1 stickyviewbookmarkleticons; text-align:center;}' +
 		'.sv_-marker {background: hsla(60, 100%, 50%, .4); box-shadow: 0 0 10px hsla(60, 100%, 50%, .2);}' +
 		'.sv_-picker {' + prefixCss('webkit,o','transition:all .3s;') + 'background: hsla(199, 100%, 55%, .4); box-shadow: 0 0 10px hsla(199, 100%, 55%, .4);}' +
 		'.sv_-btnPick.sv_-active {color:hsl(199, 100%, 63%);}' +
-		'.sv_-btnSticky {padding:6px 6px 6px 10px;}' +
+		'.sv_-btnSticky {padding-left:4px;}' +
 		'.sv_-btnSticky.sv_-active {color:#ff8;}' +
 		'.sv_-hide {display:none}'
 		
