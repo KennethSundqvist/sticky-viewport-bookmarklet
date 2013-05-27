@@ -20,9 +20,24 @@
 		guiBtnPickEl, // GUI button to initiate picker
 		guiBtnToggleStickyEl, // GUI button to toggle viewport stickyness
 		styleEl = d.createElement('style'), // For the CSS
-		css
+		css,
+		classRegex = ['(^|\\s+)','($|\\s+)'] // Use classRegex.join(class)
 	
 	o.rootEl = o.rootEl || d.body
+	
+	//
+	// Add and remove classes from elements
+	//
+	
+	function addClass(el, className) {
+		if (! el.className.match(new RegExp(classRegex.join(className)))) {
+			el.className += ' ' + className
+		}
+	}
+	
+	function removeClass(el, className) {
+		el.className = el.className.replace(new RegExp(classRegex.join(className)), ' ')
+	}
 	
 	//
 	// Set up CSS
@@ -62,7 +77,7 @@
 	// Set up HTML
 	//
 	
-	guiEl.className = 'sv_-gui'
+	addClass(guiEl, 'sv_-gui')
 	guiEl.innerHTML = '<div class="sv_-btn sv_-btnPick" title="Pick an element and stick the viewport to it">\u261D</div>' +
 		'<div class="sv_-btn sv_-btnSticky sv_-hide" title="Toggle viewport stickyness">\uE800</div>'
 	
@@ -72,8 +87,10 @@
 	guiBtnToggleStickyEl = guiEl.querySelector('.sv_-btnSticky')
 	guiBtnToggleStickyEl.addEventListener('click', toggleSticky, false)
 	
-	markerEl.className = 'sv_-marker sv_-hl'
-	pickerEl.className = 'sv_-picker sv_-hl'
+	addClass(markerEl, 'sv_-marker')
+	addClass(markerEl, 'sv_-hl')
+	addClass(pickerEl, 'sv_-picker')
+	addClass(pickerEl, 'sv_-hl')
 	
 	d.body.appendChild(guiEl)
 	d.body.appendChild(markerEl)
@@ -90,14 +107,14 @@
 		}
 		startEventHandlers()
 		showHighlightEl(pickerEl)
-		guiBtnPickEl.className += ' sv_-active'
+		addClass(guiBtnPickEl, 'sv_-active')
 	}
 	
 	function cancelPickSticky(e) {
 		if (typeof e === 'undefined' || e && e.keyCode === 27) {
 			stopEventHandlers()
 			hideHighlightEl(pickerEl)
-			guiBtnPickEl.className = guiBtnPickEl.className.replace(' sv_-active','')
+			removeClass(guiBtnPickEl, 'sv_-active')
 		}
 	}
 	
@@ -133,7 +150,7 @@
 			sticky = true
 			guiBtnToggleStickyEl.innerHTML = '\uE801'
 			guiBtnToggleStickyEl.style.display = 'block'
-			guiBtnToggleStickyEl.className += ' sv_-active'
+			addClass(guiBtnToggleStickyEl, 'sv_-active')
 			flashMarkerEl()
 		}
 	}
@@ -143,7 +160,7 @@
 			sticky = false
 			w.removeEventListener('resize', stickToEl, false)
 			guiBtnToggleStickyEl.innerHTML = '\uE800'
-			guiBtnToggleStickyEl.className = guiBtnToggleStickyEl.className.replace(' sv_-active','')
+			removeClass(guiBtnToggleStickyEl, 'sv_-active')
 		}
 	}
 	
@@ -154,7 +171,7 @@
 			setSticky(e.target)
 			stopEventHandlers()
 			hideHighlightEl(pickerEl)
-			guiBtnPickEl.className = guiBtnPickEl.className.replace(' sv_-active','')
+			removeClass(guiBtnPickEl, 'sv_-active')
 		}
 	}
 	
