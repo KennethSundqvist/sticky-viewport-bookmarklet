@@ -225,10 +225,15 @@
 			h: el.offsetHeight
 		}
 		
-		while (el && !isNaN(el.offsetTop)) {
-			pos.t += el.offsetTop
-			pos.l += el.offsetLeft
-			el = el.offsetParent
+		if (w.getComputedStyle(el).position === 'fixed') {
+			pos.t += el.offsetTop + d.body.scrollTop
+			pos.l += el.offsetLeft + d.body.scrollLeft
+		} else {
+			while (el && !isNaN(el.offsetTop)) {
+				pos.t += el.offsetTop
+				pos.l += el.offsetLeft
+				el = el.offsetParent
+			}
 		}
 		
 		return pos

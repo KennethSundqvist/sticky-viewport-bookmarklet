@@ -43,3 +43,13 @@ button {
 		margin: 0 0 1.5em 1.5em;
 		background: #4b6;
 	}
+
+.test-posFixed {
+	position: fixed;
+	top: 30px;
+	right: 30px;
+	margin: 0;
+	padding: 0.3em;
+	background: #bfd6ff;
+	border: 2px solid #89aae4;
+}
