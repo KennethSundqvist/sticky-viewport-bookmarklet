@@ -1,0 +1,22 @@
+{
+  "name": "sticky-view",
+  "author": "Kenneth Sundqvist <eviloatmeal@gmail.com> (http://eviloatmeal.se)",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm test && node build.js",
+    "test": "eslint source.js"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EvilOatmeal/sticky-view.git"
+  },
+  "bugs": {
+    "url": "https://github.com/EvilOatmeal/sticky-view/issues"
+  },
+  "homepage": "https://github.com/EvilOatmeal/sticky-view#readme",
+  "devDependencies": {
+    "eslint": "~2.13.0",
+    "uglify-js": "~2.6.3"
+  }
+}

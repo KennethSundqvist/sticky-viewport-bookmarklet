@@ -2,34 +2,71 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Sticky View Bookmarklet For Responsive Web Design</title>
-	<link rel="stylesheet" href="css.css">
-	<script>
-		// For eviloatmeal.se
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-17216403-1']);
-		_gaq.push(['_trackPageview']);
-		(function() {
-			var ga = document.createElement('script');
-			ga.async = true;
-			ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(ga, s);
-		}());
-	</script>
+	<title>Sticky Viewport Bookmarklet manual testing page</title>
+	<style>
+		*,
+		*:before,
+		*:after {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0 5.5555%;
+			color: #333;
+			background: #fff;
+			font: 100%/1.5 Arial, sans-serif;
+		}
+
+		kbd {
+			padding: 0 .2em;
+			background: #eee;
+			border: 1px solid #ccc;
+			font-weight: bold;
+			font-size: 1.4em;
+		}
+
+		code {
+			color: #666;
+			background: rgba(0, 0, 0, .07);
+			font-size: 1.4em;
+		}
+
+		button {
+			font-size: 1em;
+		}
+
+		.test-posRelative {
+			position: relative;
+			background: #f0fff4;
+		}
+
+		.test-posRelative-target {
+			float: right;
+			width: 3em;
+			height: 3em;
+			margin: 0 0 1.5em 1.5em;
+			background: #4b6;
+		}
+
+		.test-posFixed {
+			position: fixed;
+			top: 30px;
+			right: 30px;
+			margin: 0;
+			padding: 0.3em;
+			background: #bfd6ff;
+			border: 2px solid #89aae4;
+		}
+	</style>
 </head>
 <body>
 
-<h1>Sticky View Bookmarklet</h1>
+<h1>Sticky Viewport Bookmarklet</h1>
 
 <p>Sticks the scroll position to an element as you resize the browser window.
 Nice for observing how elements behave in responsive designs.</p>
-
-<hr>
-
-<h2>Bookmarklet</h2>
-
-<p>Drag this link to your bookmarks toolbar: <a href="javascript:(function(d){var s=d.createElement('script');s.src='http://eviloatmeal.se/sticky-view/sticky-view.js';d.body.appendChild(s)}(document))">Sticky View</a></p>
 
 <hr>
 
@@ -45,7 +82,37 @@ Nice for observing how elements behave in responsive designs.</p>
 	Elements like this needs special treatment when getting their position on the page.
 </p>
 
-<h3>Lorem ipsum from here on&hellip;</h3>
+<h3>Element with click handler</h3>
+
+<p>You need to hold down the <kbd>Alt</kbd> key to pick elements that have click handlers.</p>
+<p>The checkbox should not change state, if it does its click handler prevented you from making it sticky.</p>
+
+<p><label id="el-with-click-handler"><input type="checkbox" /> Label</label></p>
+<script>
+	document
+		.getElementById('el-with-click-handler')
+		.addEventListener('click', function(event) {
+			event.stopPropagation()
+		})
+</script>
+
+<h3>Nested scrolling</h3>
+
+<div style="height: 10em; overflow: auto; border: 1px solid #ccc;">
+	<p>Proin interdum, sem laoreet pretium molestie, diam sapien adipiscing ante, vel posuere arcu eros non magna. Cras id nunc ipsum. Aliquam volutpat, enim vel facilisis interdum, felis lacus euismod eros, vel molestie dui nunc eget est. Quisque euismod congue rhoncus. Maecenas facilisis porttitor eros in vulputate. Aenean sapien tortor, tincidunt ut interdum at, consectetur vel magna. Donec leo arcu, bibendum consectetur consectetur et, consequat nec orci. Nulla et justo felis, eget bibendum metus. Proin erat metus, laoreet id interdum eget, congue convallis justo. Phasellus imperdiet cursus odio, ut tincidunt nulla bibendum et. Aenean at metus nunc, ut tristique diam. Nullam condimentum ullamcorper nunc sollicitudin vestibulum.</p>
+	<p>Vivamus nunc tellus, pharetra a volutpat ac, elementum quis mi. Etiam porta mauris eu felis consequat facilisis. Sed iaculis urna in urna blandit viverra. Mauris at nulla eros, sed pulvinar lorem. Suspendisse potenti. Aliquam erat volutpat. Maecenas quis nunc ut magna lobortis lobortis. Quisque id sapien id elit gravida congue nec a metus. Sed scelerisque, ante in tincidunt laoreet, tellus mi vulputate justo, nec egestas mi erat ac enim.</p>
+
+	<ul>
+		<li>Proin nisl nunc</li>
+		<li>Vehicula sed malesuada ut</li>
+		<li>Dictum blandit arcu</li>
+	</ul>
+
+	<p>Proin nisl nunc, vehicula sed malesuada ut, dictum blandit arcu. Sed aliquet vehicula est, sed euismod justo pretium id. Morbi feugiat, justo sed gravida fringilla, lectus mauris rhoncus lectus, quis pretium magna magna sed dolor. Fusce justo dui, suscipit id pretium in, porta quis magna. Phasellus faucibus mi a nulla adipiscing vel porttitor odio consectetur. Sed lacinia nunc et velit tempus at scelerisque eros dapibus. Cras nisl mi, mollis id rhoncus vel, condimentum vitae ante. Maecenas mattis, felis vel auctor iaculis, magna ante auctor tellus, eget scelerisque nisl ante ut nisi. Donec vitae vulputate nulla.</p>
+	<p>Curabitur eu augue nisl. Integer viverra sapien eget nibh tristique pulvinar. Suspendisse sagittis, velit vel porta eleifend, nunc neque condimentum urna, id ultrices nunc odio adipiscing erat. Praesent ut lectus id metus convallis mollis. Sed ornare mi sit amet nunc rhoncus ultricies. Duis at nulla id nisl hendrerit mattis vel non nisi. Cras diam sapien, sagittis quis feugiat vel, fringilla et nunc. Donec vitae massa odio. Proin feugiat, urna rhoncus bibendum fringilla, eros mauris elementum est, eu tempor nunc erat ut odio.</p>
+</div>
+
+<h3>Lorem ipsum, you know how it goes&hellip;</h3>
 
 <p class="test-posFixed">This has position: fixed</p>
 
@@ -73,7 +140,7 @@ Nice for observing how elements behave in responsive designs.</p>
 <p>Proin nisl nunc, vehicula sed malesuada ut, dictum blandit arcu. Sed aliquet vehicula est, sed euismod justo pretium id. Morbi feugiat, justo sed gravida fringilla, lectus mauris rhoncus lectus, quis pretium magna magna sed dolor. Fusce justo dui, suscipit id pretium in, porta quis magna. Phasellus faucibus mi a nulla adipiscing vel porttitor odio consectetur. Sed lacinia nunc et velit tempus at scelerisque eros dapibus. Cras nisl mi, mollis id rhoncus vel, condimentum vitae ante. Maecenas mattis, felis vel auctor iaculis, magna ante auctor tellus, eget scelerisque nisl ante ut nisi. Donec vitae vulputate nulla.</p>
 <p>Curabitur eu augue nisl. Integer viverra sapien eget nibh tristique pulvinar. Suspendisse sagittis, velit vel porta eleifend, nunc neque condimentum urna, id ultrices nunc odio adipiscing erat. Praesent ut lectus id metus convallis mollis. Sed ornare mi sit amet nunc rhoncus ultricies. Duis at nulla id nisl hendrerit mattis vel non nisi. Cras diam sapien, sagittis quis feugiat vel, fringilla et nunc. Donec vitae massa odio. Proin feugiat, urna rhoncus bibendum fringilla, eros mauris elementum est, eu tempor nunc erat ut odio.</p>
 
-<script src="sticky-view.js"></script>
+<script src="source.js"></script>
 
 </body>
 </html>
